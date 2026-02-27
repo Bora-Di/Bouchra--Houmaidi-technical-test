@@ -1,171 +1,215 @@
-FX Deals Management System ⚡
 
-Author: Bouchra Houmaidi
+```md
+# FX Deal Data Warehouse
 
-A modern, high-performance system to manage and persist Foreign Exchange (FX) deals with robust validation, error handling, and duplicate prevention. This project ensures FX deal data integrity while providing a clean, scalable API for importing and querying deals.
+A Spring Boot application that accepts FX deal details, validates them, and persists them into a relational database.  
+This project was developed as part of the **Java Developer Technical Assignment** for ProgressSoft Corporation.
 
+---
 
+## 📌 Problem Statement
 
+The system is designed to import FX deals with the following requirements:
 
+- Accept FX deal details through a REST API
+- Validate request structure and data types
+- Prevent duplicate deal imports
+- Persist all valid deals without rollback
+- Provide proper error handling, logging, testing, and documentation
+- Run using a real database and Docker Compose
 
+---
 
+## 🧱 Tech Stack
 
+- **Java** 21  
+- **Spring Boot** 3.3.5  
+- **Spring Data JPA**
+- **PostgreSQL**
+- **MapStruct** 1.5.5.Final
+- **Bean Validation (Jakarta Validation)**
+- **Springdoc OpenAPI** 2.6.0 (Swagger UI)
+- **JUnit 5 & Mockito**
+- **JaCoCo** 0.8.11 (code coverage)
+- **Docker & Docker Compose**
+- **Maven**
 
+---
 
+## 📥 API Specification
 
-📌 Table of Contents
-
-Project Overview
-
-Features
-
-Tech Stack
-
-Setup & Installation
-
-API Guide
-
-Project Structure
-
-Project Overview
-
-This FX Deals Management System allows teams to securely import and persist FX deals. Each deal goes through a strict validation pipeline to ensure:
-
-Unique ID enforcement
-
-Correct currency codes
-
-Proper timestamps
-
-Positive amounts
-
-Duplicate deals are automatically rejected, and the system logs every operation for traceability.
-
-Features
-
-✅ Unique deal validation
-
-✅ Currency and timestamp checks
-
-✅ Positive amount enforcement
-
-🚫 Duplicate deal detection & rejection
-
-💾 Persistent storage with no rollback policy
-
-📝 Detailed logging for auditing purposes
-
-🔄 Comprehensive error responses for API clients
-
-Tech Stack
-Core
-
-Java 21 – modern language features & performance
-
-Spring Boot 3.3.5– dependency injection & REST APIs
-
-PostgreSQL 16 – reliable relational database
-
-Development
-
-Maven – project build & dependency management
-
-JUnit 5 – unit testing
-
-Mockito & AssertJ – mocking & fluent assertions
-
-SLF4J & Logback – logging
-
-Deployment
-
-Docker & Docker Compose – containerized application for easy setup
-
-Setup & Installation
-Prerequisites
-
-Java 21 JDK
-
-Maven 3.8+
-
-Docker & Docker Compose
-
-Steps
-
-Clone the repository
-
-git clone https://github.com/Bora-Di/Bouchra--Houmaidi-technical-test.git
-cd progres-soft-technical-test
-
-Start the application with Docker
-
-make up
-
-Stop containers
-
-make down
-
-Run tests
-
-make test
-
-Clean project artifacts
-
-make clean
-API Guide
-Import a Deal
-
-Endpoint:
+### Endpoint
+```
 
 POST /api/v1/deals
-Content-Type: application/json
 
-Request Example:
+````
 
+### Request Fields
+
+| Field | Description |
+|-----|------------|
+| dealUniqueId | Unique identifier for the deal |
+| fromCurrency | Ordering currency (ISO code) |
+| toCurrency | Target currency (ISO code) |
+| dealTimestamp | Deal timestamp |
+| dealAmount | Deal amount in ordering currency |
+
+### Sample Request
+
+```json
 {
-  "id": "DR123456",
+  "dealUniqueId": "FX-10001",
   "fromCurrency": "USD",
   "toCurrency": "EUR",
-  "timestamp": "2024-01-01T10:00:00Z",
-  "amount": 1000000.00
+  "dealTimestamp": "2024-01-01T10:15:30",
+  "dealAmount": 1500.75
 }
+````
 
-Response Example:
+### Sample Success Response (201 CREATED)
 
+```json
 {
-  "id": "DR123456",
+  "dealUniqueId": "FX-10001",
   "fromCurrency": "USD",
   "toCurrency": "EUR",
-  "timestamp": "2024-01-01T10:00:00Z",
-  "amount": 1000000.00
+  "dealTimestamp": "2024-01-01T10:15:30",
+  "dealAmount": 1500.75
 }
+```
 
-Error Response Example (Duplicate ID):
+---
 
+## ✅ Validation Rules
+
+* All required fields must be present
+* Currency codes must be valid ISO codes
+* Deal amount must be positive
+* Deal timestamp must be valid
+* Duplicate `dealUniqueId` values are rejected
+
+---
+
+## 🔒 Duplicate Handling
+
+* The system ensures **idempotency**
+* A deal with the same `dealUniqueId` **cannot be saved twice**
+* Duplicate requests result in a controlled error response
+* Already saved records are **never rolled back**
+
+---
+
+## ⚠️ Error Handling
+
+A centralized exception handling mechanism returns structured error responses:
+
+```json
 {
-  "code": 409,
-  "timestamp": "2026-02-27T12:00:00",
-  "message": "DuplicateDealIdException",
-  "description": "uri=/api/v1/deals",
-  "errors": "Deal ID already exists"
+  "code": 400,
+  "timestamp": "2024-01-01T12:00:00",
+  "message": "Validation failed",
+  "description": "Invalid request payload",
+  "errors": {
+    "fromCurrency": "must not be blank"
+  }
 }
-Project Structure
-technicalTest/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/progressoft/technicaltest/
-│   │   │       ├── dto/          # Request & Response DTOs
-│   │   │       ├── entity/       # JPA entities
-│   │   │       ├── repository/   # Spring Data JPA repos
-│   │   │       ├── service/      # Business logic layer
-│   │   │       ├── mapper/       # MapStruct mappers
-│   │   │       └── web/          # Controllers & exception handlers
-│   │   └── resources/            # application.properties & configs
-│   └── test/                      # Unit & integration tests
-├── Dockerfile
-├── docker-compose.yml
-└── Makefile
-Author
+```
 
-Bouchra Houmaidi – Full-stack Developer
-Passionate about building clean, scalable, and well-tested backend systems.
+---
+
+## 📊 Logging
+
+* Application-level logging is enabled
+* Important operations such as deal persistence and validation failures are logged
+* Errors are logged with proper severity levels
+
+---
+
+## 🧪 Testing & Coverage
+
+* Unit tests cover service and validation logic
+* JaCoCo is configured to generate coverage reports
+* Mapper classes are excluded from coverage
+* Tests are executed using:
+
+```bash
+mvn test
+```
+
+Coverage reports are generated under:
+
+```
+target/site/jacoco-report
+```
+
+---
+
+## 🐳 Running the Application (Docker)
+
+### Prerequisites
+
+* Docker
+* Docker Compose
+
+### Start the application
+
+```bash
+docker-compose up --build
+```
+
+### Services
+
+* Application: `http://localhost:8081`
+* PostgreSQL: `localhost:5433`
+
+---
+
+## 📘 API Documentation (Swagger)
+
+Swagger UI is available at:
+
+```
+http://localhost:8081/swagger-ui.html
+```
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+ ├── controller
+ ├── service
+ ├── repository
+ ├── entity
+ ├── dto
+ ├── mapper
+ ├── exception
+```
+
+---
+
+## 📄 Deliverables Checklist
+
+* ✅ Spring Boot application
+* ✅ PostgreSQL database
+* ✅ Docker Compose setup
+* ✅ Validation & idempotency
+* ✅ Proper error handling
+* ✅ Logging
+* ✅ Unit tests with coverage
+* ✅ Swagger documentation
+* ✅ Maven project
+* ✅ README documentation
+
+---
+
+## 👩‍💻 Author
+
+**Bouchra Houmaidi**
+Java Developer 
+
+```
+
+
