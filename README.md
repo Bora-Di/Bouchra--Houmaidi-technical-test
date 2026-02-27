@@ -1,5 +1,4 @@
 
-```md
 # FX Deal Data Warehouse
 
 A Spring Boot application that accepts FX deal details, validates them, and persists them into a relational database.  
