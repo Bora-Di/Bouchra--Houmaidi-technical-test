@@ -1,0 +1,12 @@
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\Application.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\dto\DealRequestDto.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\dto\DealResponseDto.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\entity\Deal.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\exception\DuplicateDealIdException.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\exception\ErrorResponse.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\mapper\DealMapper.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\repository\DealRepository.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\service\DealService.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\service\DealServiceImpl.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\web\DealController.java
+C:\Users\pc\Downloads\Bouchra -Houmaidi-technical-test\technical-test\src\main\java\com\progressoft\technicaltest\web\GlobalExceptionHandler.java
