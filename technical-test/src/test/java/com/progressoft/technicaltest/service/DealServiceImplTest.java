@@ -24,8 +24,10 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 class DealServiceImplTest {
+
     @Mock
     private DealRepository dealRepository;
+
     @Mock
     private DealMapper dealMapper;
 
@@ -37,44 +39,56 @@ class DealServiceImplTest {
     @BeforeEach
     void setup() {
         underTest = new DealServiceImpl(dealRepository, dealMapper);
-        dealRequestDto = new DealRequestDto("deal123",
+
+        dealRequestDto = new DealRequestDto(
+                "deal123",
                 Currency.getInstance("MAD"),
                 Currency.getInstance("USD"),
                 LocalDateTime.now(),
                 BigDecimal.valueOf(2000)
         );
 
-        deal = new Deal(dealRequestDto.id(),
+        deal = new Deal(
+                dealRequestDto.id(),
                 dealRequestDto.fromCurrency(),
                 dealRequestDto.toCurrency(),
                 dealRequestDto.timestamp(),
-                dealRequestDto.amount());
+                dealRequestDto.amount()
+        );
     }
 
     @Test
     void givenValidRequest_whenSave_thenReturnCreatedDeal() {
+        // given
         given(dealMapper.toEntity(dealRequestDto)).willReturn(deal);
         given(dealRepository.save(any(Deal.class))).willReturn(deal);
-        given(dealMapper.toResponseEntity(deal))
-                .willReturn(new DealResponseDto(dealRequestDto.id(),
+        given(dealMapper.toResponseEntity(deal)).willReturn(
+                new DealResponseDto(
+                        dealRequestDto.id(),
                         dealRequestDto.fromCurrency(),
                         dealRequestDto.toCurrency(),
                         dealRequestDto.timestamp(),
-                        dealRequestDto.amount()));
+                        dealRequestDto.amount()
+                )
+        );
 
+        // when
         DealResponseDto actual = underTest.save(dealRequestDto);
 
+        // then
         assertThat(actual).isNotNull();
         assertThat(actual.id()).isEqualTo(deal.getId());
         verify(dealRepository).save(any(Deal.class));
     }
 
     @Test
-    void givenDealIdAlreadyExists_whenSave_thenThrowDuplicatedDealIdException() {
+    void givenDealIdAlreadyExists_whenSave_thenThrowDuplicateDealIdException() {
+        // given
         given(dealRepository.existsById(dealRequestDto.id())).willReturn(true);
 
+        // when + then
         assertThatExceptionOfType(DuplicateDealIdException.class)
                 .isThrownBy(() -> underTest.save(dealRequestDto))
-                .withMessage("Deal id already exists");
+                .withMessageContaining("Deal ID already exists");
     }
 }

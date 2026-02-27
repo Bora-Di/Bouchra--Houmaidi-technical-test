@@ -1,14 +1,7 @@
 package com.progressoft.technicaltest.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,26 +9,26 @@ import java.util.Currency;
 
 @Entity
 @Table(name = "deals")
-
 @Getter
 @Setter
-@Accessors(chain = true)
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Deal {
 
     @Id
+    @Column(name = "id", nullable = false, updatable = false)
     private String id;
 
-    @NotNull
+    @Column(name = "from_currency", nullable = false)
     private Currency fromCurrency;
 
-    @NotNull
+    @Column(name = "to_currency", nullable = false)
     private Currency toCurrency;
 
-    @NotNull
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
-    @NotNull
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 }

@@ -1,93 +1,126 @@
-# FX Data Warehouse 📊
+FX Deals Management System ⚡
 
-A robust FX deals data warehouse system built for Bloomberg, focusing on efficient deal import and validation. This system handles FX deal persistence with strict validation rules and no-rollback policy.
+Author: Bouchra Houmaidi
 
-![Project Status](https://img.shields.io/badge/Status-Production--Ready-green)
-![Java](https://img.shields.io/badge/Java-21-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-green)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
-![Coverage](https://img.shields.io/badge/Coverage-80%25-brightgreen)
+A modern, high-performance system to manage and persist Foreign Exchange (FX) deals with robust validation, error handling, and duplicate prevention. This project ensures FX deal data integrity while providing a clean, scalable API for importing and querying deals.
 
-## 📑 Table of Contents
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [API Documentation](#api-documentation)
-- [Project Structure](#project-structure)
 
-## Overview
 
-FX Data Warehouse is designed to process and store Foreign Exchange deals with robust validation, deduplication, and persistence capabilities. The system ensures data integrity while maintaining a no-rollback policy for imported deals.
 
-## Key Features
 
-- 🔍 Comprehensive deal validation
-    - Deal Unique ID verification
-    - Currency ISO code validation
-    - Timestamp format validation
-    - Amount validation
-- 🚫 Duplicate detection and prevention
-- 💾 Partial save capability (no rollback policy)
-- 📝 Detailed logging and audit trail
-- 🔄 Robust error handling
 
-## Tech Stack
 
-### Core Technologies
-- Java 21
-- Spring Boot 3.2.0
-- PostgreSQL 16
-- Docker & Docker Compose
 
-### Development Tools
-- Maven
-- JUnit 5
-- AssertJ
-- Mockito
-- SLF4J & Logback
 
-## Getting Started
 
-### Prerequisites
-- JDK 21
-- Docker & Docker Compose
-- Maven 3.8+
+📌 Table of Contents
 
-### Installation
+Project Overview
 
-1. Clone the repository
-```bash
-git clone https://github.com/AymaneTech/progres-soft-technical-test
-cd progres-soft-technical-technical
-```
+Features
 
-2. Start Application 
-```bash
+Tech Stack
+
+Setup & Installation
+
+API Guide
+
+Project Structure
+
+Project Overview
+
+This FX Deals Management System allows teams to securely import and persist FX deals. Each deal goes through a strict validation pipeline to ensure:
+
+Unique ID enforcement
+
+Correct currency codes
+
+Proper timestamps
+
+Positive amounts
+
+Duplicate deals are automatically rejected, and the system logs every operation for traceability.
+
+Features
+
+✅ Unique deal validation
+
+✅ Currency and timestamp checks
+
+✅ Positive amount enforcement
+
+🚫 Duplicate deal detection & rejection
+
+💾 Persistent storage with no rollback policy
+
+📝 Detailed logging for auditing purposes
+
+🔄 Comprehensive error responses for API clients
+
+Tech Stack
+Core
+
+Java 21 – modern language features & performance
+
+Spring Boot 3.3.5– dependency injection & REST APIs
+
+PostgreSQL 16 – reliable relational database
+
+Development
+
+Maven – project build & dependency management
+
+JUnit 5 – unit testing
+
+Mockito & AssertJ – mocking & fluent assertions
+
+SLF4J & Logback – logging
+
+Deployment
+
+Docker & Docker Compose – containerized application for easy setup
+
+Setup & Installation
+Prerequisites
+
+Java 21 JDK
+
+Maven 3.8+
+
+Docker & Docker Compose
+
+Steps
+
+Clone the repository
+
+git clone https://github.com/Bora-Di/Bouchra--Houmaidi-technical-test.git
+cd progres-soft-technical-test
+
+Start the application with Docker
+
 make up
-```
 
-### Using Makefile
+Stop containers
 
-The project includes a Makefile with the following commands:
-```bash
-make up      # Start Docker containers
-make down    # Stop Docker containers
-make test    # Run tests
-make clean   # Clean build files
-```
+make down
 
-## API Documentation
+Run tests
 
-### Deal Import Endpoint
+make test
 
-```
+Clean project artifacts
+
+make clean
+API Guide
+Import a Deal
+
+Endpoint:
+
 POST /api/v1/deals
 Content-Type: application/json
-```
 
-Request Body:
-```json
+Request Example:
+
 {
   "id": "DR123456",
   "fromCurrency": "USD",
@@ -95,10 +128,9 @@ Request Body:
   "timestamp": "2024-01-01T10:00:00Z",
   "amount": 1000000.00
 }
-```
 
-Response:
-```json
+Response Example:
+
 {
   "id": "DR123456",
   "fromCurrency": "USD",
@@ -106,23 +138,34 @@ Response:
   "timestamp": "2024-01-01T10:00:00Z",
   "amount": 1000000.00
 }
-```
 
-## Project Structure
-```
+Error Response Example (Duplicate ID):
+
+{
+  "code": 409,
+  "timestamp": "2026-02-27T12:00:00",
+  "message": "DuplicateDealIdException",
+  "description": "uri=/api/v1/deals",
+  "errors": "Deal ID already exists"
+}
+Project Structure
 technicalTest/
 ├── src/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── com/progressoft/technicaltest/
-│   │   │       ├── domain/
-|   |   |       |── dto/
-│   │   │       ├── repository/
-│   │   │       ├── service/
-│   │   │       └── web/
-│   │   └── resources/
-│   └── test/
+│   │   │       ├── dto/          # Request & Response DTOs
+│   │   │       ├── entity/       # JPA entities
+│   │   │       ├── repository/   # Spring Data JPA repos
+│   │   │       ├── service/      # Business logic layer
+│   │   │       ├── mapper/       # MapStruct mappers
+│   │   │       └── web/          # Controllers & exception handlers
+│   │   └── resources/            # application.properties & configs
+│   └── test/                      # Unit & integration tests
 ├── Dockerfile
-└── docker-compose.yml 
+├── docker-compose.yml
 └── Makefile
-```
+Author
+
+Bouchra Houmaidi – Full-stack Developer
+Passionate about building clean, scalable, and well-tested backend systems.
